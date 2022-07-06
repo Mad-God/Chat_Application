@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party apps
+    'crispy_forms',
+    'crispy_tailwind',
     'channels',
     'channels_redis',
 
@@ -192,3 +194,11 @@ STATICFILES_DIRS = [
     MEDIA_ROOT, 
 ]
 
+
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login'
+
+
+CRISPY_TEMPLATE_PACK = 'tailwind'
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'tailwind'

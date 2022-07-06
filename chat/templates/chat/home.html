@@ -1,0 +1,101 @@
+{% extends "base.html" %} {% load tailwind_filters %} {% block content %}
+<div class="flex">
+    {% comment %} the Groups List {% endcomment %}
+    <div class="block p-5">
+        <h1 class = "text-5md py-4">
+        Hey, welcome to <b>Chat Application</b>
+        </h1>
+        {% if joined_groups %}
+        <h1 class = "font-bold text-2xl py-3">
+            Pleases click on one of these links to enter chat :
+        </h1>
+        {% else %}
+        {% endif %}
+        {% for group in joined_groups %}
+        <div class = "container p-5 flex bg-green-500 rounded my-4" style="width:50%">
+            <a href="{% url 'chat:chat' name=group.slug %}">
+                <h1 class = "text-2xl font-bold">
+                    {{group}}
+                </h1>
+                <h1 class = "text-sm my-2 mx-4" style="">
+                    {{group.members.count}} member(s)
+                </h1>
+            </a>
+        </div>
+        {% endfor %}
+
+        {% if applied_groups %}
+        <h1 class = "font-bold text-2xl py-3">
+            These are the groups you've applied to for membership :
+        </h1>
+        {% else %}
+        {% endif %}
+            <br><br>
+            {% for group in applied_groups %}
+            <div class = "container px-5 py-4 flex bg-purple-500 rounded" style="width:50%">
+                <h1 class = "text-2xl font-bold">
+                    {{group}}
+                </h1>
+                <h1 class = "text-sm my-2 mx-4" style="">
+                    {{group.members.count}} member(s)
+                </h1>
+                <button class = "bg-indigo-100 rounded px-4 text-md my-7" style= "margin-left:30%"><em>Applied</em></button>
+            </div>
+            {% endfor %}
+
+        {% if other_groups %}
+        <h1 class = "font-bold text-2xl py-3">
+            These are all the other groups. Click "Join" to apply for membership :
+        </h1>
+        {% else %}
+        {% endif %}
+        <br><br>
+        {% for group in other_groups %}
+        <div class = "container px-5 py-4 flex bg-gray-500 rounded" style="width:50%">
+            <h1 class = "text-2xl font-bold">
+                {{group}}
+            </h1>
+            <h1 class = "text-sm my-2 mx-4" style="">
+                {{group.members.count}} member(s)
+            </h1>
+            <a href="{% url 'chat:apply-membership' name=group.slug %}">
+                <button class = "bg-green-300 rounded px-7 py-2 text-md my-2" style="margin-left:20%;" >Join</button>
+            </a>
+        </div>
+        {% endfor %}
+
+        <hr class = "my-5" style="height:2px;border-width:0;color:gray;background-color:gray">
+        <div class = "block">
+            Create a new Group: 
+            <form method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class = "bg-indigo-300 rounded radius-8 p-2">Create Group</button>
+            </form>
+        </div>
+    </div>
+
+    {% comment %} the User List {% endcomment %}
+    <div class = "px-4 bg-gray-500 width-max">
+        <h1 class = "text-2xl my-8 font-bold">
+            Message a User directly: 
+        </h1>
+
+        {% comment %}the actual useers list div  {% endcomment %}
+        <div>
+            {% for user in users %}
+            <div class = "container px-5 py-2 flex bg-gray-400 rounded my-4">
+                <h1 class = "text-2xl font-bold">
+                    {{user}}
+                </h1>
+                <br>
+                <h1 class = "text-sm mx-4 my-3" style="">
+                    Number of messages
+                </h1>
+                <button class = "bg-green-300 rounded px-7 text-md my-3">Message</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

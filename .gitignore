@@ -29,3 +29,8 @@ drf.txt
 throttling.txt
 viewsets_and_routers.txt
 tasks.txt
+base/__pycache__/
+base/migrations/
+base/migrations/__pycache__/
+Chat_Application/__pycache__/settings.cpython-37.pyc
+Chat_Application/__pycache__/urls.cpython-37.pyc   
