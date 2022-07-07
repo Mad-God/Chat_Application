@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'crispy_tailwind',
     'channels',
     'channels_redis',
+    'emoji_picker',
 
     # custom apps 
     'base',

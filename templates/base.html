@@ -1,5 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -18,12 +19,19 @@
       href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
     />
     <script src="https://unpkg.com/flowbite@1.3.4/dist/flowbite.js"></script>
-    <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    {% comment %} <script src="./TW-ELEMENTS-PATH/dist/js/index.min.js"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.js"></script>
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/emojionearea/3.4.2/emojionearea.min.css" />  {% endcomment %}
+    <link rel="stylesheet" href="{% static 'emojionearea.css' %}" /> 
+
     <style>
       body {
         /*background-color: rgba(249, 249, 250, 0.795);

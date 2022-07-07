@@ -92,7 +92,9 @@
                 <h1 class = "text-sm mx-4 my-3" style="">
                     Number of messages
                 </h1>
-                <button class = "bg-green-300 rounded px-7 text-md my-3">Message</button>
+                <a href="{% url 'chat:direct' user_id=user.id %}">
+                    <button class = "bg-green-300 rounded px-7 text-md my-3">Message</button>
+                </a>
             </div>
             {% endfor %}
         </div>

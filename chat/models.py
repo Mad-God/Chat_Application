@@ -3,6 +3,8 @@ from base.models import User
 from django.db.models.signals import post_save, pre_save, post_delete, pre_delete
 from django.utils.text import slugify  
 from datetime import datetime 
+from emoji_picker.widgets import EmojiPickerTextInputAdmin, EmojiPickerTextareaAdmin
+
 
 # Create your models here.
 
@@ -11,7 +13,7 @@ class ChatGroup(models.Model):
     admin = models.ManyToManyField(User, default = None,related_name="chat_groups")
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True)
-    
+    # direct = models.BooleanField(deafult = False)
     def __str__(self):
         return self.name
 

@@ -13,4 +13,7 @@ urlpatterns = [
     path("accept/<name>/<int:user>", views.AcceptMemberShip.as_view(), name='accept-membership'),
     path("revoke/<name>/<int:user>", views.RevokeMemberShip.as_view(), name='revoke-membership'),
     path("deny/<name>/<int:user>", views.DenyMemberShip.as_view(), name='deny-membership'),
+
+    # direct messages
+    path("direct/<int:user_id>", views.DirectLobby.as_view(), name='direct'),
 ]

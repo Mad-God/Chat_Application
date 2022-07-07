@@ -11,7 +11,6 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         # for initial request that comes in from client
         self.accept()
-        # breakpoint()
         self.room_group_name = self.scope["path"].split('/')[-1]
         self.send(text_data = json.dumps({
             "type":"connection_established",
@@ -24,6 +23,7 @@ class ChatConsumer(WebsocketConsumer):
     
     def receive(self, text_data): # for when the client sends messages
         text_data_json = json.loads(text_data)
+        # breakpoint()
         message = text_data_json["message"]
         sender = self.save_message(text_data_json)
 
@@ -38,6 +38,7 @@ class ChatConsumer(WebsocketConsumer):
 
 
     def save_message(self, message):
+        # breakpoint()
         if message["sender"]:
             sender = User.objects.get(id=int(message["sender"]))
             TextMessage.objects.create(text = message["message"], sender=sender, group=ChatGroup.objects.get(slug=self.room_group_name))

@@ -1,17 +1,20 @@
 {% extends "base.html" %} {% load tailwind_filters %} {% block content %}
+
+
 <div class="mx-auto width-full px-8 flex">
     <div class="width-full" style="width:50%">
     <h1 class="font-bold text-4xl"> Let's Chat !</h1>  <br>
     <form id='form' class="flex">
         <h1 class="font-bold text-sm px-4 my-4">
-                Type your message and hit "enter":
+            Type your message and hit "enter":
         </h1>
+        {{form}}
         
-        <input type = "text" name = 'message'/ style="border-radius:10px">
+        <button type="submit">Submit</button>
     </form>
     <br>
     <h1>
-        All the messages: 
+        All the messages:  {{group.slug}} sjdnkajsdnkjasnkasjdjn
 
     </h1>
     <div id="messages" style="
@@ -66,16 +69,16 @@
             </button>
             <button class = "bg-red-400 rounded px-2 -mx-3 text-md ">
                 <a href="{% url 'chat:deny-membership' name=name user=member.user.id %}">
+                    
                     Deny
                 </a>
             </button>
             <br>
         </div>
-        
         {% endfor %}
     </div>
 	<script type="text/javascript">
-        let url = `ws://${window.location.host}/ws/socket-server/{{name}}`
+        let url = `ws://${window.location.host}/ws/socket-server/{{group.slug}}`
         const chatSocket = new WebSocket(url)
         chatSocket.onmessage = function(e){
             let data = JSON.parse(e.data)
@@ -91,7 +94,7 @@
         let form = document.getElementById("form")
         form.addEventListener('submit', (e)=>{
             e.preventDefault();
-            let message = e.target.message.value
+            let message = e.target.long_text.value
             chatSocket.send(JSON.stringify({
                 'message':message,
                 {% if request.user.is_authenticated %}
@@ -101,8 +104,27 @@
                 {% endif %}
             }))
             console.log("dijoisjf", message);
+            e.target.long_text.value = ""
             form.reset()
         })
-    </script>  
+
+        // initialise TinyMCE on the textarea
+
+        {% comment %} $("#message-input").emojioneArea({
+            pickerPosition:"top",
+
+        }) {% endcomment %}
+
+            {% comment %} tinymce.init({
+              selector: "#message-input",
+              plugins: "emoticons",
+              toolbar: "emoticons",
+              toolbar_location: "bottom",
+              menubar: false
+            }); {% endcomment %}
+
+            tinymce.get("#message-input").getContent({ format: "text" });
+        </script>  
+        {% comment %} console.log($("")) {% endcomment %}
 </div>
 {% endblock %}

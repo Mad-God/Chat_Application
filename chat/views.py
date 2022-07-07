@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from chat.models import ChatGroup, TextMessage, Member
 from base.models import User
-from .forms import GroupForm
+from .forms import GroupForm, MessageForm
 from .mixins import MemberRequiredMixin, AdminRequiredMixin, NotAdminMixin
 
 
@@ -63,6 +63,7 @@ class Lobby(MemberRequiredMixin, View):
 
     def get(self, args, **kwargs):
         name = kwargs["name"]
+        form = MessageForm()
         group = ChatGroup.objects.get(slug=name)
         admin = self.request.user in group.admin.all()
         members = Member.objects.filter(group=group, accepted=True)
@@ -71,7 +72,7 @@ class Lobby(MemberRequiredMixin, View):
         if admin:
             requested = Member.objects.filter(group=group, accepted=False)
 
-        return render(self.request, 'chat/lobby.html', {"name":name, 'previous_messages':messages[:10], "members":members, "requests":requested, "admin":admin})
+        return render(self.request, 'chat/lobby.html', {"group":group, 'name':name, 'previous_messages':messages[:10], "members":members, "requests":requested, "admin":admin, "form":form})
 
 
 class ApplyForMemberShip(LoginRequiredMixin, View):
@@ -102,19 +103,23 @@ class RevokeMemberShip(NotAdminMixin, View):
 
 
 
-class DirectLobby(View):
+class DirectLobby(LoginRequiredMixin, View):
     '''
     Get a few previous messages of the direct message conversation and render the chat lobby
     '''
 
     def get(self, args, **kwargs):
-        name = kwargs["name"]
-        group = ChatGroup.objects.get(slug=name)
-        admin = self.request.user in group.admin.all()
-        members = Member.objects.filter(group=group, accepted=True)
-        messages = TextMessage.objects.filter(group=group).order_by('-created_on')
-        requested = None
-        if admin:
-            requested = Member.objects.filter(group=group, accepted=False)
+        uid = int(kwargs["user_id"])
 
-        return render(self.request, 'chat/lobby.html', {"name":name, 'previous_messages':messages[:10], "members":members, "requests":requested, "admin":admin})
+        # create the sluug for the given DM pair slug
+        if self.request.user.id < int(uid):
+            slug = f"direct-{str(self.request.user.id)}-{str(uid)}"
+            pass
+        else:
+            slug = f"direct-{str(uid)}-{str(self.request.user.id)}"
+            pass
+        group, _ = ChatGroup.objects.get_or_create(slug=slug, name=slug)
+        # breakpoint()
+        messages = TextMessage.objects.filter(group=group).order_by('-created_on')
+        # messages = None
+        return render(self.request, 'chat/lobby.html', {'group':group,'previous_messages':messages,})
