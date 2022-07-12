@@ -1,0 +1,58 @@
+create a test.ini file in root folder
+ set the SETTINGS and python_files configurations,
+ which will search the whole project directory for python files that follw the naming convention
+
+pip install django-pytest
+
+create test.py files or folderrs inside apps or in root directory, 
+    import pytest
+
+    # write test or multiple tests in the file
+
+    def test_func():
+        assert _something_:
+
+
+use pytest command in console to run all the tests
+    -x: this flag is used to stop testing whenever any test fails
+    -rP: to print the additional print statements in a test to the console 
+
+markers:
+    identifies special tests with decorators
+    use @pytest.mark._marker_name_ to set a marker on a test
+    some of the markers are:
+        xfail: for tests that are sure to fail
+        skip: for tests that are to be skipped
+    you can also create your own markers in the test.ini file
+
+
+
+
+
+
+Pattern for writting tests:
+    arrange: whatever needs to be done before the test takes place
+    act: perform the operation that need to be tested
+    assert: assert that the operation has yeilded the desired output
+
+
+Fixtures:
+    can be run before/after a test 
+    used for the purpose liking to feed data to tests like db connections, URLs to test and input data 
+
+    to declare fixtures, use the decorator: @pytest.fixtures
+    to use fixtures, pass their names as parameters to the test functions
+
+    scope of fixtures:
+        we can specify scope of a fixture to control how many times a fixture is called for test sets;
+         we can do this by setting the 'scope' parameter in the fixture function's parameters. 
+        Some of the values for scope of fixture(given as strings) are:
+            function:   to run fixture once per function
+            class:      to run fixture once per class
+            module:     to run fixture once per module
+            session:    to run fixture once per session
+
+
+
+
+ 

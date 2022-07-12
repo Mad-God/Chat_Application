@@ -69,13 +69,20 @@
             </button>
             <button class = "bg-red-400 rounded px-2 -mx-3 text-md ">
                 <a href="{% url 'chat:deny-membership' name=name user=member.user.id %}">
-                    
                     Deny
                 </a>
             </button>
             <br>
         </div>
         {% endfor %}
+        {% if admin %}
+            <div class = "my-8">
+                <button class = "font-bold text-sm m-6" id = "invite-button" onclick="copyInviteLinkFunction()">
+                    Copy Invite link for the Group
+                </button>
+            </div>
+        {% else %}
+        {% endif %}
     </div>
 	<script type="text/javascript">
         let url = `ws://${window.location.host}/ws/socket-server/{{group.slug}}`
@@ -87,7 +94,7 @@
                 let messages=document.getElementById("messages")
                 messages.innerHTML = `
                 <div>
-                    <p>${data.message} <em>from</em> ${data.sender} <em>from</em> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} </p>
+                    <p>${data.message} <em>from</em> ${data.sender} <em>on</em> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} </p>
                 </div>`+ messages.innerHTML
             }
         }
@@ -115,15 +122,21 @@
 
         }) {% endcomment %}
 
-            {% comment %} tinymce.init({
+            tinymce.init({
               selector: "#message-input",
               plugins: "emoticons",
               toolbar: "emoticons",
               toolbar_location: "bottom",
               menubar: false
-            }); {% endcomment %}
+            });
 
-            tinymce.get("#message-input").getContent({ format: "text" });
+            function copyInviteLinkFunction() {
+                navigator.clipboard.writeText("http://127.0.0.1:8000/invite/{{group.id}}");
+              
+                alert("Copied the text: ");
+              }
+              
+
         </script>  
         {% comment %} console.log($("")) {% endcomment %}
 </div>

@@ -5,7 +5,7 @@ from django.views.generic import (
     CreateView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
+from django.db.models import Q, Count
 
 
 # self imports
@@ -28,11 +28,12 @@ class HomeView(View):
     def get_context_data(self, **kwargs):
         context = {}
         if self.request.user.is_authenticated:
-            context["joined_groups"] = ChatGroup.objects.filter(members__user = self.request.user, members__accepted=True)
-            context["applied_groups"] = ChatGroup.objects.filter(members__user = self.request.user, members__accepted=False)
-            context["other_groups"] = ChatGroup.objects.exclude(members__user = self.request.user)            
+            # breakpoint()
+            context["joined_groups"] = ChatGroup.objects.annotate(mem_count = Count('members')).filter(members__user = self.request.user, members__accepted=True, mem_count__gt = 0)
+            context["applied_groups"] = ChatGroup.objects.annotate(mem_count = Count('members')).filter(members__user = self.request.user, members__accepted=False, mem_count__gt = 0)
+            context["other_groups"] = ChatGroup.objects.annotate(mem_count = Count('members')).exclude(members__user = self.request.user, members__gt = 0).filter(mem_count__gt = 0)
         else:
-            context["other_groups"] = ChatGroup.objects.all()
+            context["other_groups"] = ChatGroup.objects.annotate(mem_count = Count('members')).filter(mem_count__gt = 0)
         context["users"] = User.objects.all()
         return context
 
@@ -75,6 +76,32 @@ class Lobby(MemberRequiredMixin, View):
         return render(self.request, 'chat/lobby.html', {"group":group, 'name':name, 'previous_messages':messages[:10], "members":members, "requests":requested, "admin":admin, "form":form})
 
 
+ 
+
+class DirectLobby(LoginRequiredMixin, View):
+    '''
+    Get a few previous messages of the direct message conversation and render the chat lobby
+    '''
+
+    def get(self, args, **kwargs):
+        uid = int(kwargs["user_id"])
+
+        # create the sluug for the given DM pair slug
+        form = MessageForm()
+        if self.request.user.id < int(uid):
+            slug = f"direct-{str(self.request.user.id)}-{str(uid)}"
+            pass
+        else:
+            slug = f"direct-{str(uid)}-{str(self.request.user.id)}"
+            pass
+        group, _ = ChatGroup.objects.get_or_create(slug=slug, name=slug)
+        # breakpoint()
+        messages = TextMessage.objects.filter(group=group).order_by('-created_on')
+        # messages = None
+        return render(self.request, 'chat/lobby.html', {'group':group,'previous_messages':messages, "form":form})
+
+
+
 class ApplyForMemberShip(LoginRequiredMixin, View):
     def get(self,*args,**kwargs):
         Member.objects.create(user=self.request.user, group=ChatGroup.objects.get(slug=kwargs["name"]), accepted=False)
@@ -103,23 +130,12 @@ class RevokeMemberShip(NotAdminMixin, View):
 
 
 
-class DirectLobby(LoginRequiredMixin, View):
-    '''
-    Get a few previous messages of the direct message conversation and render the chat lobby
-    '''
+class InviteMemberShip(LoginRequiredMixin, View):
+    def dispatch(self, *args, **kwargs):
+        breakpoint()
+        user = self.request.user
+        group = ChatGroup.objects.get(id=kwargs["group_id"])
+        Member.objects.get_or_create(user=user, group=group, accepted = True)
+        return redirect("chat:chat", name=group.slug)
 
-    def get(self, args, **kwargs):
-        uid = int(kwargs["user_id"])
 
-        # create the sluug for the given DM pair slug
-        if self.request.user.id < int(uid):
-            slug = f"direct-{str(self.request.user.id)}-{str(uid)}"
-            pass
-        else:
-            slug = f"direct-{str(uid)}-{str(self.request.user.id)}"
-            pass
-        group, _ = ChatGroup.objects.get_or_create(slug=slug, name=slug)
-        # breakpoint()
-        messages = TextMessage.objects.filter(group=group).order_by('-created_on')
-        # messages = None
-        return render(self.request, 'chat/lobby.html', {'group':group,'previous_messages':messages,})
