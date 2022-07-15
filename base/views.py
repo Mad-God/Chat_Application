@@ -62,7 +62,6 @@ class LoginPageView(View):
 
 
     def post(self, request):
-        pdb.set_trace()
         form = self.form_class(request.POST)
         user = auth.authenticate(
             email=self.request.POST.get("email"),

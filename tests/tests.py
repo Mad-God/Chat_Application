@@ -22,7 +22,6 @@ def test_render_views(client, param):
 
 @pytest.mark.django_db
 def test_signup(client, get_user_data):
-    pdb.set_trace()
     user_model = get_user_model()
     assert user_model.objects.count() == 0
     signup_url = urls.reverse("signup")
@@ -32,14 +31,17 @@ def test_signup(client, get_user_data):
 
 
 def test_login(client, get_user_data, get_user):
-    user = get_user
     login_url = urls.reverse("login")
-    print(get_user)
-    pdb.set_trace()
     resp = client.post(login_url, data = get_user_data)
     assert resp.status_code == 302
-    # assert resp.url =
     assert True
 
+
+def test_logout(client, get_authenticated_user, get_user_data):
+    user = get_user_data
+    logout_url = urls.reverse("logout")
+    resp = client.get(logout_url)
+    assert resp.status_code == 302
+    assert True
 
 

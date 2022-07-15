@@ -121,3 +121,5 @@ PARAMETERIZING:
     
     You can also use actual django forms for testing by defining failchecks in the form as methods. Then, use the form to take and validate the data. 
     You can even test requests with a given set of parameters and check the response code returned inside a test. 
+
+
