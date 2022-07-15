@@ -1,0 +1,143 @@
+{% extends "base.html" %} {% load tailwind_filters %} {% block content %}
+
+
+<div class="mx-auto width-full px-8 flex">
+    <div class="width-full" style="width:50%">
+    <h1 class="font-bold text-4xl"> Let's Chat !</h1>  <br>
+    <form id='form' class="flex">
+        <h1 class="font-bold text-sm px-4 my-4">
+            Type your message and hit "enter":
+        </h1>
+        {{form}}
+        
+        <button type="submit">Submit</button>
+    </form>
+    <br>
+    <h1>
+        All the messages:  {{group.slug}} sjdnkajsdnkjasnkasjdjn
+
+    </h1>
+    <div id="messages" style="
+        height: 50vh;
+        border: 2px solid black;
+        overflow-y: scroll;
+        padding: 10px 20px;
+    ">
+    {% for msg in previous_messages %}
+    <div>
+        <p> {{msg.text}} <em>from</em>
+        {% if msg.sender %}
+            {{msg.sender.username}} 
+        {% else %}
+            Anonymous
+        {% endif %}<em>on</em> {{msg.created_on }}</p>
+    </div>
+    
+    {% endfor %}
+
+    </div>
+    </div>
+    <div class ="block bg-purple-500 px-4 rounded" style="margin-left:20%; width:20%;">
+        
+        <h1 class = "font-bold text-md py-5 px-4 bg-gray-400 rounded">All Group Members:</h1>
+        {% for member in members %}
+        <div class = "">
+            <strong>{{member.user}}</strong>
+            {% if admin %}
+            <button class = "bg-red-400 rounded px-2 mx-10 text-md ">
+                <a href="{% url 'chat:revoke-membership' name=name user=member.user.id %}">
+                    Remove
+                </a>
+            </button>
+            
+            {% else %}
+            {% endif %}
+            <br>
+        </div>
+        {%endfor%}
+        {% if requests %}
+            <h1 class = "font-bold text-md py-3 px-4 my-8 bg-gray-400 rounded">Pending requests:</h1>
+        {% else %}
+        {% endif %}
+        {% for member in requests %}
+        <div class = "flex">
+            <strong>{{member.user}}</strong>
+            <button class = "bg-green-300 rounded px-2 mx-9 text-md ">
+                <a href="{% url 'chat:accept-membership' name=name user=member.user.id %}">
+                    Approve
+                </a>
+            </button>
+            <button class = "bg-red-400 rounded px-2 -mx-3 text-md ">
+                <a href="{% url 'chat:deny-membership' name=name user=member.user.id %}">
+                    Deny
+                </a>
+            </button>
+            <br>
+        </div>
+        {% endfor %}
+        {% if admin %}
+            <div class = "my-8">
+                <button class = "font-bold text-sm m-6" id = "invite-button" onclick="copyInviteLinkFunction()">
+                    Copy Invite link for the Group
+                </button>
+            </div>
+        {% else %}
+        {% endif %}
+    </div>
+	<script type="text/javascript">
+        let url = `ws://${window.location.host}/ws/socket-server/{{group.slug}}`
+        const chatSocket = new WebSocket(url)
+        chatSocket.onmessage = function(e){
+            let data = JSON.parse(e.data)
+            console.log('Data:', data)
+            if(data.type==="chat"){
+                let messages=document.getElementById("messages")
+                messages.innerHTML = `
+                <div>
+                    <p>${data.message} <em>from</em> ${data.sender} <em>on</em> ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} </p>
+                </div>`+ messages.innerHTML
+            }
+        }
+        let form = document.getElementById("form")
+        form.addEventListener('submit', (e)=>{
+            e.preventDefault();
+            let message = e.target.long_text.value
+            chatSocket.send(JSON.stringify({
+                'message':message,
+                {% if request.user.is_authenticated %}
+                'sender':{{request.user.id}},
+                {% else %}
+                'sender':0,
+                {% endif %}
+            }))
+            console.log("dijoisjf", message);
+            e.target.long_text.value = ""
+            form.reset()
+        })
+
+        // initialise TinyMCE on the textarea
+
+        {% comment %} $("#message-input").emojioneArea({
+            pickerPosition:"top",
+
+        }) {% endcomment %}
+
+            tinymce.init({
+              selector: "#message-input",
+              plugins: "emoticons",
+              toolbar: "emoticons",
+              toolbar_location: "bottom",
+              menubar: false
+            });
+
+            function copyInviteLinkFunction() {
+                navigator.clipboard.writeText("http://127.0.0.1:8000/invite/{{group.id}}");
+              
+                alert("Copied the text: ");
+              }
+              
+
+        </script>  
+        {% comment %} console.log($("")) {% endcomment %}
+</div>
+{% endblock %}
