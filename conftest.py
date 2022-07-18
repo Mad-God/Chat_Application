@@ -10,23 +10,26 @@ import pdb
 from base.models import User
 from chat.models import ChatGroup
 from tests.factories import UserFactory
-register(UserFactory)       # even tho the name is UserFactory, user_factory is the name that will be used.
+
+register(
+    UserFactory
+)  # even tho the name is UserFactory, user_factory is the name that will be used.
+
 
 @pytest.fixture
 def new_user(user_factory):
     return user_factory.create()
 
+
 @pytest.fixture
 def get_user_data():
     return {
-        "email":"user_email",
-        'username':"username",
-        "name":"name",
-        "mobile":"1234512345",
-        "password":"strongpswd1"
+        "email": "user_email",
+        "username": "username",
+        "name": "name",
+        "mobile": "1234512345",
+        "password": "strongpswd1",
     }
-
-
 
 
 @pytest.fixture
@@ -43,17 +46,13 @@ def get_authenticated_user(db, get_user):
     return get_user_data
 
 
-
-
 @pytest.fixture
 @pytest.mark.django_db
 def get_chat_group(db, get_user_data):
-    return {"name":"ChatGroup", "slug":"ChatGroup"}
+    return {"name": "ChatGroup", "slug": "ChatGroup"}
 
 
 @pytest.fixture
 @pytest.mark.django_db
 def create_chat_group(db, get_chat_group):
     return ChatGroup.objects.create(**get_chat_group)
-
-

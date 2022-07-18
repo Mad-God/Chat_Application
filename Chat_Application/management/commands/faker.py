@@ -41,16 +41,18 @@ class AddFakeChatGroups(BaseCommand):
 
     def handle(self, *args, **kwargs):
         check_groups = ChatGroup.objects.all().count()
-        self.stdout.write(self.style.SUCCESS(f"Number of categories(before): {check_groups}"))
+        self.stdout.write(
+            self.style.SUCCESS(f"Number of categories(before): {check_groups}")
+        )
 
         fake = Faker(["en_IN"])
         fake.add_provider(UsersProvider)
 
         for _ in range(5):
-            g_name = fake.unique.text(nb_words = 2)
+            g_name = fake.unique.text(nb_words=2)
             user = fake.user()
-            ChatGroup.objects.create(name = g_name, admin = user)
-            
+            ChatGroup.objects.create(name=g_name, admin=user)
+
         # for _ in range(15):
         #     e = fake.unique.ecommerce_products()
         #     ProductType.objects.create(name=e)
@@ -72,4 +74,6 @@ class AddFakeChatGroups(BaseCommand):
         #     ProductImage.objects.create(product_id=i, alt_text=fake.text(max_nb_chars=30), is_feature=True)
 
         check_group = ChatGroup.objects.all().count()
-        self.stdout.write(self.style.SUCCESS(f"Number of categories(after): {check_group}"))
+        self.stdout.write(
+            self.style.SUCCESS(f"Number of categories(after): {check_group}")
+        )

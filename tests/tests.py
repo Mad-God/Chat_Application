@@ -4,21 +4,21 @@ from django import urls
 from django.contrib.auth import get_user_model
 import pdb
 
- 
 
 @pytest.mark.parametrize(
-    'param', 
+    "param",
     [
         ("chat:home"),
         ("login"),
         ("signup"),
-    ]
+    ],
 )
 @pytest.mark.django_db
 def test_render_views(client, param):
     temp_url = urls.reverse(param)
     resp = client.get(temp_url)
     assert resp.status_code == 200
+
 
 @pytest.mark.django_db
 def test_signup(client, get_user_data):
@@ -32,7 +32,7 @@ def test_signup(client, get_user_data):
 
 def test_login(client, get_user_data, get_user):
     login_url = urls.reverse("login")
-    resp = client.post(login_url, data = get_user_data)
+    resp = client.post(login_url, data=get_user_data)
     assert resp.status_code == 302
     assert True
 
@@ -43,8 +43,3 @@ def test_logout(client, get_authenticated_user, get_user_data):
     resp = client.get(logout_url)
     assert resp.status_code == 302
     assert True
-
-
-
-
-
