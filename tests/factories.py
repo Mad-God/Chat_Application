@@ -17,9 +17,9 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = User
     username = fake.name()
+    name = fake.name()
     mobile="1234512345"
-    is_staff = "True"
-    # email = str(User.objects.all().count()) + "user@gmail.com"
-    email= "admin.admin.com"
+    email = fake.email()
+    password =fake.password()
 
 

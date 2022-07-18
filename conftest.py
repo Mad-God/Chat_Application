@@ -13,12 +13,8 @@ from tests.factories import UserFactory
 register(UserFactory)       # even tho the name is UserFactory, user_factory is the name that will be used.
 
 @pytest.fixture
-def new_user1(user_factory):
-
-    user = user_factory.create()
-    # count=dir(user_factory)
-    count=None
-    return (user, count)
+def new_user(user_factory):
+    return user_factory.create()
 
 @pytest.fixture
 def get_user_data():
@@ -44,7 +40,7 @@ def get_user(db, get_user_data):
 @pytest.mark.django_db
 def get_authenticated_user(db, get_user):
     auth.authenticate(get_user_data)
-    return user
+    return get_user_data
 
 
 
@@ -52,11 +48,12 @@ def get_authenticated_user(db, get_user):
 @pytest.fixture
 @pytest.mark.django_db
 def get_chat_group(db, get_user_data):
-    x = User.objects.create_user(**get_user_data)
     return {"name":"ChatGroup", "slug":"ChatGroup"}
 
 
 @pytest.fixture
 @pytest.mark.django_db
 def create_chat_group(db, get_chat_group):
-    return ChatGroup.objects.create(name="ChatGroup", slug="ChatGroup")
+    return ChatGroup.objects.create(**get_chat_group)
+
+
