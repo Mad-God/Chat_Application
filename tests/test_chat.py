@@ -5,11 +5,11 @@ from django.contrib.auth import get_user_model
 import pdb
 
 
-from chat.models import ChatGroup
+from chat.models import ChatGroup, Member
 
 """
-    path("", views.HomeView.as_view(), name='home'),
-    path("chat/<name>", views.Lobby.as_view(), name='chat'),
+    path("", views.HomeView.as_view(), name='home'),                                                    Done
+    path("chat/<name>", views.Lobby.as_view(), name='chat'),                                            
 
     # membership urls
     path("apply/<name>", views.ApplyForMemberShip.as_view(), name='apply-membership'),
@@ -39,7 +39,6 @@ def test_index(client, get_chat_group):
 def test_group_create(client, get_chat_group, get_user_data):
     assert True
     index_url = urls.reverse("chat:home")
-    pdb.set_trace()
     client.force_login(user = User.objects.get(username="username"))
     resp = client.post(index_url, get_chat_group)
     assert resp.status_code == 302
@@ -47,4 +46,41 @@ def test_group_create(client, get_chat_group, get_user_data):
 
 
 
+
+def test_group_apply(client, create_chat_group, get_user_data):
+    pdb.set_trace()
+    # index_url = urls.reverse("chat:apply-membership", kwargs={"name":get_chat_group["name"]})
+    index_url = urls.reverse("chat:apply-membership", kwargs={"name":"ChatGroup"})
+    # index_url = urls.reverse("chat:apply-membership", name="ChatGroup")
+    client.force_login(user = User.objects.get(username="username"))
+    resp = client.get(index_url)
+    assert ChatGroup.objects.count() == 1
+    assert resp.status_code == 302
+    assert Member.objects.count() == 1
+
+
    
+def test_group_apply(client, get_chat_data, create_chat_group, get_user_data):
+    assert ChatGroup.objects.count() == 0
+    index_url = urls.reverse("chat:apply-membership", kwargs={"name":get_chat_data["name"]})
+    client.force_login(user = User.objects.get(username=get_user_data["username"]))
+    resp = client.get(index_url)
+    assert ChatGroup.objects.count() == 1
+    assert resp.status_code == 302
+    assert Member.objects.count() == 1
+
+
+   
+def test_group_accept(client, create_chat_group, get_chat_data,  get_user_data):
+    pdb.set_trace()
+    assert ChatGroup.objects.count() == 0
+    index_url = urls.reverse("chat:apply-membership", kwargs={"name":get_chat_data["name"]})
+    client.force_login(user = User.objects.get(username=get_user_data["username"]))
+    resp = client.get(index_url)
+    assert ChatGroup.objects.count() == 1
+    assert resp.status_code == 302
+    assert Member.objects.count() == 1
+
+   
+
+

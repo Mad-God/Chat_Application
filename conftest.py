@@ -53,5 +53,10 @@ def get_authenticated_user(db, get_user):
 @pytest.mark.django_db
 def get_chat_group(db, get_user_data):
     x = User.objects.create_user(**get_user_data)
-    pdb.set_trace()
     return {"name":"ChatGroup", "slug":"ChatGroup"}
+
+
+@pytest.fixture
+@pytest.mark.django_db
+def create_chat_group(db, get_chat_group):
+    return ChatGroup.objects.create(name="ChatGroup", slug="ChatGroup")
