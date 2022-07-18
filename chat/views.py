@@ -6,7 +6,7 @@ from django.views.generic import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q, Count
-
+import pdb
 
 # self imports
 
@@ -132,7 +132,6 @@ class RevokeMemberShip(NotAdminMixin, View):
 
 class InviteMemberShip(LoginRequiredMixin, View):
     def dispatch(self, *args, **kwargs):
-        breakpoint()
         user = self.request.user
         group = ChatGroup.objects.get(id=kwargs["group_id"])
         Member.objects.get_or_create(user=user, group=group, accepted = True)
