@@ -13,7 +13,7 @@ class ChatGroup(models.Model):
     admin = models.ManyToManyField(User, default = None,related_name="chat_groups")
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(unique=True)
-    # direct = models.BooleanField(deafult = False)
+    # direct = models.BooleanField(deafult = False) 
     def __str__(self):
         return self.name
 

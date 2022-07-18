@@ -45,7 +45,7 @@ class HomeView(View):
             request, self.template_name, context
         )
 
-    def post(self,*args,**kwargs):
+    def post(self,*args,**kwargs): 
         form = GroupForm(self.request.POST)
         if form.is_valid():
             # chat_group = ChatGroup.objects.create(name=self.request.POST.get("name"), admin=self.request.user)

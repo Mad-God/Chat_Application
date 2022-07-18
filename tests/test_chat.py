@@ -82,7 +82,7 @@ def test_group_accept(client, create_chat_group, new_user, get_user):
     resp = client.get(index_url)
     assert ChatGroup.objects.count() == 1
     assert resp.status_code == 302
-    assert Member.objects.count() == 1   
+    assert Member.objects.count() == 1 
 
 
 
