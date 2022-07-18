@@ -4,6 +4,9 @@ from django import urls
 from django.contrib.auth import get_user_model
 import pdb
 
+
+from chat.models import ChatGroup
+
 """
     path("", views.HomeView.as_view(), name='home'),
     path("chat/<name>", views.Lobby.as_view(), name='chat'),
@@ -20,22 +23,7 @@ import pdb
 """
 
  
-@pytest.mark.django_db
-def test_index(client):
-    index_url = urls.reverse("chat:home")
-    resp = client.get(index_url)
-    assert resp.status_code == 200
-    assert True
 
-
-
-
-@pytest.mark.django_db
-def test_index(client):
-    index_url = urls.reverse("chat:home")
-    resp = client.get(index_url)
-    assert resp.status_code == 200
-    assert True
 
 # @pytest.mark.parametrize()
 @pytest.mark.django_db
@@ -48,12 +36,15 @@ def test_index(client, get_chat_group):
 
 
 
-def test_group_create(client, get_chat_group):
+def test_group_create(client, get_chat_group, get_user_data):
     assert True
     index_url = urls.reverse("chat:home")
+    pdb.set_trace()
+    client.force_login(user = User.objects.get(username="username"))
     resp = client.post(index_url, get_chat_group)
-    assert resp.status_code == 200
-    assert True
+    assert resp.status_code == 302
+    assert ChatGroup.objects.count() == 1
 
 
- 
+
+   
