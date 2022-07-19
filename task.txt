@@ -1,0 +1,9 @@
+test databse
+
+assert template and response
+
+use factories for everything
+
+------------------ 19 JULY -----------------------------------------
+
+use new_user in every test case

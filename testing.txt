@@ -18,14 +18,14 @@ use pytest command in console to run all the tests
     -rP: to print the additional print statements in a test to the console 
 
 markers:
+
+
     identifies special tests with decorators
     use @pytest.mark._marker_name_ to set a marker on a test
     some of the markers are:
         xfail: for tests that are sure to fail
         skip: for tests that are to be skipped
     you can also create your own markers in the test.ini file
-
-
 
 
 

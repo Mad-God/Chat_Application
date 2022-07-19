@@ -1,5 +1,1 @@
 channels
-faker
-factory
-factory_boy
-pytest-django
