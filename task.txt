@@ -4,6 +4,8 @@ assert template and response
 
 use factories for everything
 
+permissions in tests
+
 ------------------ 19 JULY -----------------------------------------
 
 use new_user in every test case

@@ -17,9 +17,25 @@ register(
 
 
 @pytest.fixture
-def new_user(user_factory):
-    return user_factory.create()
-
+def new_user(request, db, user_factory, num_users = 5):
+    # def give_users(num_users):
+    # pdb.set_trace()
+    # users = user_factory.build_batch(num_users)
+    # create_user = lambda x:x.create()
+    # create_user(users)
+    # return users
+    # while True:
+    # thing = User.objects.create(username=self.username, name=self.name, password=self.password, email=self.email, mobile=self.mobile)
+    # pdb.set_trace()
+    # return give_users
+    # thing.delete()
+    class ThingFactory(object):
+        def get():
+            thing = user_factory.create_new_user()
+            # pdb.set_trace()
+            return thing
+    return ThingFactory
+ 
 
 @pytest.fixture
 def get_user_data():
@@ -56,3 +72,7 @@ def get_chat_group(db, get_user_data):
 @pytest.mark.django_db
 def create_chat_group(db, get_chat_group):
     return ChatGroup.objects.create(**get_chat_group)
+
+
+
+
