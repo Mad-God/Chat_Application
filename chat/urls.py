@@ -12,7 +12,7 @@ urlpatterns = [
     path(
         "accept/<name>/<int:user>",
         views.AcceptMemberShip.as_view(),
-        name="accept-membership", 
+        name="accept-membership",
     ),
     path(
         "revoke/<name>/<int:user>",

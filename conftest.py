@@ -17,13 +17,14 @@ register(
 
 
 @pytest.fixture
-def new_user(request, db, user_factory, num_users = 5):
+def new_user(request, db, user_factory, num_users=5):
     class ThingFactory(object):
         def get():
             thing = user_factory.create_new_user()
             return thing
+
     return ThingFactory
- 
+
 
 @pytest.fixture
 def get_user_data():
@@ -60,7 +61,3 @@ def get_chat_group(db, get_user_data):
 @pytest.mark.django_db
 def create_chat_group(db, get_chat_group):
     return ChatGroup.objects.create(**get_chat_group)
-
-
-
-

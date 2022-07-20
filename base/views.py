@@ -10,8 +10,6 @@ from django.views.generic import (
 import pdb
 
 
-
-
 from base.models import User
 
 # Create your views here.
@@ -31,7 +29,6 @@ class SignupView(CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-
 class LoginPageView(View):
     """
     authenticates the user if credentials are correct else redirects back to login page
@@ -46,7 +43,6 @@ class LoginPageView(View):
         return render(
             request, self.template_name, context={"form": form, "message": message}
         )
-    
 
     def post(self, request):
         form = self.form_class(request.POST)
@@ -77,20 +73,20 @@ class Logout(View):
         return redirect("login")
 
 
-
 def signup(request):
     if request.method == "POST":
         data = dict(request.POST)
         data.pop("csrfmiddlewaretoken", None)
         data.pop("password1", None)
-        data["password"] = data["password2"] if "password2" in data else data["password"]
+        data["password"] = (
+            data["password2"] if "password2" in data else data["password"]
+        )
         data.pop("password2", None)
         data["mobile"] = int(data["mobile"][0])
 
         data = User.objects.create(**data)
         return redirect("login")
     else:
-        return render(request, "registration/signup.html", {"form":CustomUserCreationForm()})
-
-
-
+        return render(
+            request, "registration/signup.html", {"form": CustomUserCreationForm()}
+        )
