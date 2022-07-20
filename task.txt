@@ -18,3 +18,4 @@ use new_user in every test case
 persistent database
 
 test permissions
+https://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@github.com/Mad-God/Chat_Application.git
