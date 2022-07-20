@@ -9,3 +9,12 @@ permissions in tests
 ------------------ 19 JULY -----------------------------------------
 
 use new_user in every test case
+
+
+
+
+----------------- 20 JULY ------------------------------------------
+
+persistent database
+
+test permissions

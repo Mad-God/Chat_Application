@@ -29,17 +29,21 @@ def new_user(request, db, user_factory, num_users=5):
 @pytest.fixture
 def get_user_data():
     return {
-        "email": "user_email",
+        "email": "user_email@user.com",
         "username": "username",
         "name": "name",
         "mobile": "1234512345",
         "password": "strongpswd1",
+        "password1": "strongpswd1",
+        "password2": "strongpswd1",
     }
 
 
 @pytest.fixture
 @pytest.mark.django_db
 def get_user(db, get_user_data):
+    get_user_data.pop("password1")
+    get_user_data.pop("password2")
     user = User.objects.create_user(**get_user_data)
     return user
 
