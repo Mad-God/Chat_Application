@@ -45,11 +45,7 @@ def test_index(client, get_chat_group):
 def test_group_accept(client, create_chat_group, new_user):
     chat_group = create_chat_group
     user = new_user.get()
-    pdb.set_trace()
     admin = new_user.get()
-    pdb.set_trace()
-    # user.create()
-    # admin.create()
     index_url = urls.reverse("chat:accept-membership", kwargs={"name":chat_group.name, 'user':user.id})
     Member.objects.create(group = chat_group, user = user, accepted = False)
     chat_group.admin.add(admin.id)
