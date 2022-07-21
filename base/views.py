@@ -23,13 +23,16 @@ class SignupView(CreateView):
 
     def get_success_url(self):
         return reverse("login")
+
     def post(self, *args, **kwargs):
         data = self.request.POST
         form = self.form_class(data)
-        
+
         if form.is_valid():
             form.save()
-        return redirect("login")
+            return redirect("login")
+        else:
+            return render(self.request, self.template_name, status=400)
 
     def form_valid(self, form):
         form.save()

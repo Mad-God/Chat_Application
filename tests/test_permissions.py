@@ -12,15 +12,11 @@ from tests.factories import UserFactory
 fake = Faker()
 
 
-
-
 from base.models import User
 from chat.models import ChatGroup, Member
 
 
-
 class PermissionTests(TestCase):
-
     def setUp(self):
         self.client = Client()
 
@@ -53,37 +49,40 @@ class PermissionTests(TestCase):
         """
         user NOT in group should not have access
         """
-        self.client.force_login(user = self.user)
-        Member.objects.create(group=self.chatgroup, user=self.user, accepted = True)
-        index_url = reverse("chat:chat",kwargs={"name":self.chatgroup.slug})
+        self.client.force_login(user=self.user)
+        Member.objects.create(group=self.chatgroup, user=self.user, accepted=True)
+        index_url = reverse("chat:chat", kwargs={"name": self.chatgroup.slug})
         response = self.client.get(index_url)
-        self.assertEqual(response.status_code, 200, u'user in group should have access')
-        
+        self.assertEqual(response.status_code, 200, "user in group should have access")
 
     def test_user_cannot_access(self):
         """
         user NOT in group should not have access
         """
-        self.client.force_login(user = self.user)
-        Member.objects.create(group=self.chatgroup, user=self.user, accepted = False)
-        index_url = reverse("chat:chat",kwargs={"name":self.chatgroup.slug})
+        self.client.force_login(user=self.user)
+        Member.objects.create(group=self.chatgroup, user=self.user, accepted=False)
+        index_url = reverse("chat:chat", kwargs={"name": self.chatgroup.slug})
         response = self.client.get(index_url)
-        self.assertEqual(response.status_code, 403, u'user in group should have access')
+        self.assertEqual(response.status_code, 403, "user in group should have access")
 
     def test_admin_can_revoke(self):
-        
+
         """
         user NOT in group should not have access
         """
-        self.client.force_login(user = self.admin)
-        Member.objects.create(group=self.chatgroup, user=self.admin, accepted = True)
-        Member.objects.create(group=self.chatgroup, user=self.user, accepted = True)
+        self.client.force_login(user=self.admin)
+        Member.objects.create(group=self.chatgroup, user=self.admin, accepted=True)
+        Member.objects.create(group=self.chatgroup, user=self.user, accepted=True)
         assert Member.objects.count() == 2
         self.chatgroup.admin.add(self.admin)
-        index_url = reverse("chat:revoke-membership",kwargs={"name":self.chatgroup.slug, "user":self.user.id})
+        index_url = reverse(
+            "chat:revoke-membership",
+            kwargs={"name": self.chatgroup.slug, "user": self.user.id},
+        )
         response = self.client.get(index_url)
-        self.assertEqual(response.status_code, 302, u'user in group should have access')
+        self.assertEqual(response.status_code, 302, "user in group should have access")
         assert Member.objects.count() == 1
+
 
 # class PermissionTests(TestCase):
 
@@ -124,7 +123,7 @@ class PermissionTests(TestCase):
 #         index_url = reverse("chat:chat",kwargs={"name":self.chatgroup.slug})
 #         response = self.client.get(index_url)
 #         self.assertEqual(response.status_code, 200, u'user in group should have access')
-        
+
 
 #     def test_user_cannot_access(self):
 #         """
@@ -135,6 +134,3 @@ class PermissionTests(TestCase):
 #         index_url = reverse("chat:chat",kwargs={"name":self.chatgroup.slug})
 #         response = self.client.get(index_url)
 #         self.assertEqual(response.status_code, 403, u'user in group should have access')
-    
-
-

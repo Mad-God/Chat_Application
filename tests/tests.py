@@ -26,7 +26,7 @@ def test_signup(client, get_user_data):
     assert user_model.objects.count() == 0
     signup_url = urls.reverse("signup")
     get_user_data.pop("password")
-    resp = client.post(signup_url, data = get_user_data)
+    resp = client.post(signup_url, data=get_user_data)
     assert user_model.objects.count() == 1
     assert resp.status_code == 302
 

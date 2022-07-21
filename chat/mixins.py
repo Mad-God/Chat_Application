@@ -10,12 +10,13 @@ from base.models import User
 class MemberRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return Member.objects.filter(
-            user=self.request.user, group__slug=self.kwargs["name"], accepted = True
+            user=self.request.user, group__slug=self.kwargs["name"], accepted=True
         ).exists()
 
     def handle_no_permission(self):
         return HttpResponse(
-            "You are not a member of this group. Please apply for membership on homepage", status = 403
+            "You are not a member of this group. Please apply for membership on homepage",
+            status=403,
         )
 
 
@@ -41,4 +42,3 @@ class NotAdminMixin(UserPassesTestMixin):
         return HttpResponse(
             "The requested operation can't be performed on an Admin user"
         )
-

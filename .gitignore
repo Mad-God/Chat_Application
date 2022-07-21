@@ -36,4 +36,12 @@ Chat_Application/__pycache__/settings.cpython-37.pyc
 Chat_Application/__pycache__/urls.cpython-37.pyc   
 Chat_Application/management/__pycache__/
 Chat_Application/management/commands/__pycache__/
-__pycache__/conftest.cpython-36.pyc
+__pycache__/conftest.cpython-36.pyc`
+.vscode/
+base/tests/__pycache__/factories.cpython-36.pyc
+base/tests/__pycache__/test_urls.cpython-36-pytest-7.0.1.pyc
+base/tests/__pycache__/test_views.cpython-36-pytest-7.0.1.pyc
+base/tests/__pycache__/test_views.cpython-36.pyc
+chat/tests/__pycache__/test_urls.cpython-36-pytest-7.0.1.pyc
+base/tests/__pycache__/test_urls.cpython-36.pyc
+

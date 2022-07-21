@@ -99,7 +99,7 @@ def test_group_invite(client, create_chat_group, new_user, get_user):
         },
     )
     assert Member.objects.count() == 0
-    client.force_login(user=User.objects.get(username=user.username))   
+    client.force_login(user=User.objects.get(username=user.username))
     resp = client.get(index_url)
     assert resp.status_code == 302
     assert Member.objects.count() == 1

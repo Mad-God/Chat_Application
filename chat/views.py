@@ -172,5 +172,3 @@ class InviteMemberShip(LoginRequiredMixin, View):
         group = ChatGroup.objects.get(id=kwargs["group_id"])
         Member.objects.get_or_create(user=user, group=group, accepted=True)
         return redirect("chat:chat", name=group.slug)
-
-
