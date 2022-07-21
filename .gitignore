@@ -34,3 +34,6 @@ base/__pycache__/
 base/migrations/__pycache__/
 Chat_Application/__pycache__/settings.cpython-37.pyc
 Chat_Application/__pycache__/urls.cpython-37.pyc   
+Chat_Application/management/__pycache__/
+Chat_Application/management/commands/__pycache__/
+__pycache__/conftest.cpython-36.pyc

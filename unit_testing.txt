@@ -1,0 +1,40 @@
+WHY Testing?
+    higher application quality
+    easier refactoring: changing the code without changing the behaviour
+    easier version upgrades
+
+
+Types of Testing:
+    Unit testing: 
+        test one piece independently of other pieces
+        fastest to run  
+    
+    Integration testing:
+        test multiple pieces together to assure that they work well with one another
+    
+    Functional testing:
+        test that everything works from the end-user's point of view
+        slowest to run
+        done with tools like selenium
+
+
+Setup  Tests and Testing URL:
+    create a tests folder inside each of the applications and inside these folders, create separate files for testing separate aspects of a projects like test_urls, test_views, test_forms & test_models. Also, create the dunder __init__.py file for this folder.
+
+    Now, django looks at files, classes, and functions that start with "test" and executes them.
+
+    Now, in each of these files, import SimpleTestCase, and write classes subclassing this class. Define a few methods in these classes with name starting with "test". 
+
+    to run the tests, use the commnad-
+        manage.py test application_name
+
+
+
+
+
+
+
+
+
+
+

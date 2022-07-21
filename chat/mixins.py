@@ -21,12 +21,6 @@ class MemberRequiredMixin(UserPassesTestMixin):
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
-        print(
-            "From AdminReqMixin",
-            ChatGroup.objects.filter(
-                slug=self.kwargs["name"], admin=self.request.user
-            ).exists(),
-        )
         return ChatGroup.objects.filter(
             slug=self.kwargs["name"], admin=self.request.user
         ).exists()
@@ -39,12 +33,6 @@ class AdminRequiredMixin(UserPassesTestMixin):
 
 class NotAdminMixin(UserPassesTestMixin):
     def test_func(self):
-        print(
-            "from NotAdminMixin",
-            not ChatGroup.objects.filter(
-                slug=self.kwargs["name"], admin=User.objects.get(id=self.kwargs["user"])
-            ).exists(),
-        )
         return not ChatGroup.objects.filter(
             slug=self.kwargs["name"], admin=User.objects.get(id=self.kwargs["user"])
         ).exists() and AdminRequiredMixin.test_func(self)
@@ -53,3 +41,4 @@ class NotAdminMixin(UserPassesTestMixin):
         return HttpResponse(
             "The requested operation can't be performed on an Admin user"
         )
+
