@@ -61,7 +61,6 @@ class HomeView(View):
 
     def post(self, *args, **kwargs):
         form = GroupForm(self.request.POST)
-        pdb.set_trace()
         if form.is_valid():
             chat_group = form.save(commit=False, user=self.request.user)
             return redirect("chat:chat", name=chat_group.slug)

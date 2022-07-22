@@ -100,3 +100,6 @@ def signup(request):
         return render(
             request, "registration/signup.html", {"form": CustomUserCreationForm()}
         )
+
+
+

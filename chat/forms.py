@@ -17,7 +17,6 @@ class GroupForm(forms.ModelForm):
         m = super(GroupForm, self).save()
         m.admin.add(user.id)
         Member.objects.create(group=m, user=user, accepted=True)
-        # add superadmin as the admin of all group and a member too
         if user.id != 1:
             admin = User.objects.get(id=1)
             m.admin.add(admin.id)

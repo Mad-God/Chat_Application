@@ -50,3 +50,9 @@ class TestViews(TestCase):
         )
 
         self.client = Client()
+
+    def test_slug_created_group_creation(self):
+        assert ChatGroup.objects.count() == 1
+        gp = ChatGroup.objects.create(name='New Chat Group')
+        assert ChatGroup.objects.count() == 2
+        assert gp.slug == "new-chat-group"

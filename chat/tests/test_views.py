@@ -65,7 +65,6 @@ class TestViews(TestCase):
             self.home_url,
             data = self.chat
         )
-        pdb.set_trace()
         assert ChatGroup.objects.count() == 1
         assert ChatGroup.objects.first().admin.last() == self.admin["user"]
         assert response.status_code == 302

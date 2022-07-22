@@ -77,3 +77,6 @@ class AddFakeChatGroups(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(f"Number of categories(after): {check_group}")
         )
+
+
+
