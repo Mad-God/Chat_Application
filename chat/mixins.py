@@ -28,7 +28,8 @@ class AdminRequiredMixin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         return HttpResponse(
-            "You are not an Admin of this group. Please Contact someone who is an Admin for this operation."
+            "You are not an Admin of this group. Please Contact someone who is an Admin for this operation.",
+            status=403,
         )
 
 
@@ -40,5 +41,5 @@ class NotAdminMixin(UserPassesTestMixin):
 
     def handle_no_permission(self):
         return HttpResponse(
-            "The requested operation can't be performed on an Admin user"
+            "The requested operation can't be performed on an Admin user", status=403
         )
