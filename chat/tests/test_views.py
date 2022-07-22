@@ -10,52 +10,65 @@ from chat.models import *
 
 class TestViews(TestCase):
     def setUp(self):
-        self.user = UserFactory.get_new_user()
-        self.user["user"] = UserFactory.create_user(self.user)
+            self.user = UserFactory.get_new_user()
+            self.user["user"] = UserFactory.create_user(self.user)
 
-        self.admin = UserFactory.get_new_user()
-        self.admin["user"] = UserFactory.create_user(self.admin)
+            self.admin = UserFactory.get_new_user()
+            self.admin["user"] = UserFactory.create_user(self.admin)
 
-        self.chat = ChatFactory.get_chat_group()
-        self.chat["chat"] = ChatFactory.create_chat_group(self.chat)
-        self.chat["chat"].admin.add(self.admin["user"])
+            self.chat = ChatFactory.get_chat_group()
+            self.chat["chat"] = ChatFactory.create_chat_group(self.chat)
+            self.chat["chat"].admin.add(self.admin["user"])
 
-        self.login_url = reverse("login")
-        self.logout_url = reverse("logout")
-        self.signup_url = reverse("signup")
-        self.home_url = reverse("chat:home")
-        self.chat_url = reverse(
-            "chat:chat",
-            kwargs={
-                "name": self.chat["chat"].slug,
-            },
-        )
-        self.accept_url = reverse(
-            "chat:accept-membership",
-            kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
-        )
-        self.revoke_url = reverse(
-            "chat:revoke-membership",
-            kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
-        )
-        self.deny_url = reverse(
-            "chat:deny-membership",
-            kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
-        )
-        self.apply_url = reverse(
-            "chat:apply-membership", kwargs={"name": self.chat["chat"].slug}
-        )
-        self.invite_url = reverse(
-            "chat:invite-membership", kwargs={"group_id": self.chat["chat"].id}
-        )
+            self.login_url = reverse("login")
+            self.logout_url = reverse("logout")
+            self.signup_url = reverse("signup")
+            self.home_url = reverse("chat:home")
+            self.chat_url = reverse(
+                "chat:chat",
+                kwargs={
+                    "name": self.chat["chat"].slug,
+                },
+            )
+            self.accept_url = reverse(
+                "chat:accept-membership",
+                kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
+            )
+            self.revoke_url = reverse(
+                "chat:revoke-membership",
+                kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
+            )
+            self.deny_url = reverse(
+                "chat:deny-membership",
+                kwargs={"name": self.chat["chat"].slug, "user": self.user["user"].id},
+            )
+            self.apply_url = reverse(
+                "chat:apply-membership", kwargs={"name": self.chat["chat"].slug}
+            )
+            self.invite_url = reverse(
+                "chat:invite-membership", kwargs={"group_id": self.chat["chat"].id}
+            )
+            self.client = Client()
 
-        self.client = Client()
-
-    def test_home(self):
+    def test_home_get(self):
         response = self.client.get(
             self.home_url,
         )
         assert response.status_code == 200
+    
+    def test_home_post(self):
+        ChatGroup.objects.all().delete()
+        self.client.force_login(self.admin["user"])
+        self.chat.pop("chat")
+        assert ChatGroup.objects.count() == 0
+        response = self.client.post(
+            self.home_url,
+            data = self.chat
+        )
+        pdb.set_trace()
+        assert ChatGroup.objects.count() == 1
+        assert ChatGroup.objects.first().admin.last() == self.admin["user"]
+        assert response.status_code == 302
 
     def test_apply_membership(self):
         self.client.force_login(self.user["user"])
@@ -131,4 +144,3 @@ class TestViews(TestCase):
         assert Member.objects.count() == 1
         assert response.status_code == 302
 
-    

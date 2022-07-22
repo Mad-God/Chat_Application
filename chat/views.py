@@ -61,6 +61,7 @@ class HomeView(View):
 
     def post(self, *args, **kwargs):
         form = GroupForm(self.request.POST)
+        pdb.set_trace()
         if form.is_valid():
             chat_group = form.save(commit=False, user=self.request.user)
             return redirect("chat:chat", name=chat_group.slug)
@@ -172,3 +173,6 @@ class InviteMemberShip(LoginRequiredMixin, View):
         group = ChatGroup.objects.get(id=kwargs["group_id"])
         Member.objects.get_or_create(user=user, group=group, accepted=True)
         return redirect("chat:chat", name=group.slug)
+
+
+ 
