@@ -18,4 +18,15 @@ Setup Environment for Python + Behave + Selenium
 
 
 Folder-File Structure:
-    we can create multiple features, multiple scenarios for each feature and multiple steps in each scenario. During writting scenarios, we use keywords from Gherkin language such as Feature, Scenario, Given, Take
+    we can create multiple features, multiple scenarios for each feature and multiple steps in each scenario. During writting scenarios, we use keywords from Gherkin language such as Feature, Scenario, Given, When, Then, And etc.
+
+    Usually, we keep all out features in a seperate folder inside a file w extension .feature and all the steps in a sub-folder of features folder. The steps steps file include the actual code whereas the feature files' steps only contain description for non-techs. 
+    For mapping the steps in feature and steps files, we use decorators along with the description of those steps.
+
+
+Steps Parameters:
+     To pass parameters to a test, simply pass them in quotes "" in the step declaration in the feature file and receive them as variable in the decorator and the definition of the step handler function. 
+
+
+
+

@@ -44,4 +44,6 @@ base/tests/__pycache__/test_views.cpython-36-pytest-7.0.1.pyc
 base/tests/__pycache__/test_views.cpython-36.pyc
 chat/tests/__pycache__/test_urls.cpython-36-pytest-7.0.1.pyc
 base/tests/__pycache__/test_urls.cpython-36.pyc
-
+base/tests/__pycache__/
+tests/__pycache__/
+chat/tests/__pycache__/
